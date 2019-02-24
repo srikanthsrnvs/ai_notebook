@@ -16,7 +16,7 @@ export function update_cards(){
             new_current_card.push(card_cache[word])
         }
     })
-
+    current_cards = new_current_cards
 }
 
 export function get_definition(word) {

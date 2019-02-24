@@ -1,4 +1,5 @@
 import React from "react";
+import {current_cards, get_definition} from './text_processing.js';
 
 function DefinitionCard(props){
     return <div className="card has-margin-bottom-20">
@@ -31,8 +32,13 @@ function DefinitionCard(props){
             </div>
 }
 
-export default function DefinitionCardColumn(props) {
-    if ("words_and_definitions" in props){
+export default class DefinitionCardColumn extends React.Component {
+    constructor(props){
+        super(props)
+    }
+    render() {
+
+    if ("words_and_definitions" in this.props){
         const cards = props.words_and_definitions.map((word_definition_pair, index) => {
             return <DefinitionCard />
         })
@@ -42,6 +48,7 @@ export default function DefinitionCardColumn(props) {
 
         <DefinitionCard />
    )
+    }
 }
 
 
