@@ -1,5 +1,8 @@
 # Notetonic Eater
 
+## For development
+`parcel serve index.html`
+
 ## TODO
 Download and vendor all external dependencies
 - quilljs
