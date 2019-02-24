@@ -1,7 +1,7 @@
 const retext = require('retext')
 const keywords = require('retext-keywords')
 const toString = require('nlcst-to-string')
-import wiki from 'wikijs';
+import {update_cards, current_text} from './text_processing.js';
 // const Quill = require('quill')
 // const wiki = require('wikijs').default;
 
@@ -11,9 +11,7 @@ const editor = new Quill('.editor', {
 });
 
 const text_processor = retext().use(keywords)
-const card_column = document.getElementById('definition-cards')
-let current_text = [];
-let card_cache = {}
+// const card_column = document.getElementById('definition-cards')
 
 editor.on('text-change', function (delta, oldDelta, source) {
     // if (source == 'api') {
@@ -35,22 +33,9 @@ editor.on('text-change', function (delta, oldDelta, source) {
     })
 });
 
-function update_cards(){
-    // console.log(current_text)
-    current_text.forEach((word)=>{
-        if (!(word in card_cache)){
-            const definition = get_definition(word)
-            card_cache[word] = definition
-        } else {
-            card_cache[word]
-        }
-
-    })
-}
-
-function get_definition(word){
-    wiki.search('star wars').then(data => console.log(data.results[0]));
-    return "hello"
-}
-
 window.setInterval(update_cards, 1000)
+
+import React from "react";
+import ReactDOM from "react-dom";
+import DefinitionCards from "./definition_cards.jsx";
+ReactDOM.render(<DefinitionCards />, document.getElementById("definition-cards"));
