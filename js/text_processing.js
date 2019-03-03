@@ -50,7 +50,10 @@ export function update_cards(view_update_fun, current_text) {
 // IO bound, TODO integrate async with parent code
 async function get_definition(word) {
     console.log("Getting definition...")
-    const data = await wiki().search(word)
+    const data = await wiki({
+            apiUrl: "https://en.wikipedia.org/w/api.php"
+        }
+    ).search(word)
     if (data.results) {
         const page = await wiki().page(
             data.results[0]
