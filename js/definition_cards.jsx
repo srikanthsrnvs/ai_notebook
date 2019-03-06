@@ -7,6 +7,8 @@ function DefinitionCard(props) {
     return <div className="card has-margin-bottom-20">
         <div className="card-image">
             <figure className="image is-4by3">
+            {/* Placeholder for lazy loading: */}
+            {/* https://bulma.io/images/placeholders/640x480.png */}
                 <img src={props.main_image} alt="Placeholder image" />
             </figure>
         </div>
@@ -35,7 +37,7 @@ function DefinitionCard(props) {
     </div>
 }
 
-import notebookPlaceholder from '../img/nirzar-pangarkar-85500-unsplash.jpg';
+import notebookPlaceholder from '../img/nirzar-pangarkar-85500-unsplash-min.jpg';
 
 export default function RenderCardColumn(props) {
     let cards = {}

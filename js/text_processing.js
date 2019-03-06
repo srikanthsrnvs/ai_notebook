@@ -1,14 +1,34 @@
 import wiki from 'wikijs';
+// import workerize from 'workerize';
 
 const retext = require('retext')
 const keywords = require('retext-keywords')
 const toString = require('nlcst-to-string')
 const text_processor = retext().use(keywords)
 
+// IO bound, TODO integrate async with parent code
+async function get_definition(word) {
+    console.log("Getting definition...")
+    const data = await wiki({
+            apiUrl: "https://en.wikipedia.org/w/api.php"
+        }
+    ).search(word)
+    if (data.results) {
+        const page = await wiki().page(
+            data.results[0]
+        )
+        return [await
+            page.mainImage(),
+            await page.summary()
+        ]
+    }
+}
+
+// const worker = workerize(get_definition)
+
 let current_words = []
 
 let definition_cache = {} // TODO: Replace with LRU cache otherwise this is a memory leak
-
 
 export function update_cards(view_update_fun, current_text) {
     // Extract keywords, TODO: heavy optimisation
@@ -27,6 +47,8 @@ export function update_cards(view_update_fun, current_text) {
     current_words.forEach(async (word) => {
         const card = {}
         if (!(word in definition_cache)) {
+            // console.log(worker)
+            // const [img, def] = await worker.get_definition(word)
             const [img, def] = await get_definition(word)
             const definition = {
                 "img": img,
@@ -47,20 +69,3 @@ export function update_cards(view_update_fun, current_text) {
     view_update_fun(current_cards)
 }
 
-// IO bound, TODO integrate async with parent code
-async function get_definition(word) {
-    console.log("Getting definition...")
-    const data = await wiki({
-            apiUrl: "https://en.wikipedia.org/w/api.php"
-        }
-    ).search(word)
-    if (data.results) {
-        const page = await wiki().page(
-            data.results[0]
-        )
-        return [await
-            page.mainImage(),
-            await page.summary()
-        ]
-    }
-}
